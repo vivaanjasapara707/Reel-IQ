@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReelIQ - Will Your Reel Go Viral?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#06060e;
+  --bg2:#0d0d1a;
+  --card:#10101f;
+  --card2:#14142a;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.12);
+  --r:#ff3d6b;
+  --o:#ff7e3d;
+  --g:#00e5a0;
+  --y:#ffd93d;
+  --b:#4d9fff;
+  --text:#f0f0ff;
+  --muted:#585878;
+  --sub:#8888aa;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-weight:400;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* ── GRADIENT ORBS ── */
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(255,61,107,0.12),transparent 70%);top:-200px;left:-200px;}
+.orb2{width:500px;height:500px;background:radial-gradient(circle,rgba(77,159,255,0.1),transparent 70%);bottom:-100px;right:-100px;}
+.orb3{width:400px;height:400px;background:radial-gradient(circle,rgba(0,229,160,0.07),transparent 70%);top:40%;left:50%;transform:translateX(-50%);}
+
+/* ── LAYOUT ── */
+.wrap{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:0 24px 80px;}
+
+/* ── HERO ── */
+.hero{padding:80px 0 60px;text-align:center;}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,61,107,0.08);
+  border:1px solid rgba(255,61,107,0.2);
+  color:#ff8fa3;font-size:11px;font-weight:500;
+  letter-spacing:0.16em;text-transform:uppercase;
+  padding:6px 16px;border-radius:100px;
+  margin-bottom:28px;
+  animation:fadeUp 0.6s ease both;
+}
+.pulse{width:6px;height:6px;background:#ff3d6b;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+
+.hero h1{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(3rem,8vw,5.5rem);
+  font-weight:700;line-height:0.95;
+  letter-spacing:-0.03em;
+  margin-bottom:24px;
+  animation:fadeUp 0.6s ease 0.1s both;
+}
+.hero h1 .line1{display:block;color:#fff;}
+.hero h1 .line2{
+  display:block;
+  background:linear-gradient(90deg,var(--r),var(--o),var(--y));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{
+  color:var(--sub);font-size:1rem;font-weight:300;
+  max-width:420px;margin:0 auto 48px;line-height:1.7;
+  animation:fadeUp 0.6s ease 0.2s both;
+}
+
+.stats{
+  display:flex;justify-content:center;gap:0;
+  border:1px solid var(--border2);
+  border-radius:16px;background:var(--card);
+  overflow:hidden;
+  animation:fadeUp 0.6s ease 0.3s both;
+  max-width:480px;margin:0 auto;
+}
+.stat{flex:1;padding:20px 16px;text-align:center;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none;}
+.stat-n{
+  font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;
+  background:linear-gradient(135deg,#fff,var(--sub));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block;
+}
+.stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:4px;display:block;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── DIVIDER ── */
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:48px 0;}
+
+/* ── SECTION LABEL ── */
+.sec{
+  display:flex;align-items:center;gap:12px;
+  font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;margin-top:36px;
+}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-icon{font-size:14px;}
+
+/* ── HOOK INPUT ── */
+.hook-wrap{position:relative;}
+.hook-input{
+  width:100%;background:var(--card);
+  border:1px solid var(--border2);
+  border-radius:16px;padding:20px 24px;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:1rem;font-weight:300;line-height:1.6;
+  resize:vertical;min-height:110px;
+  transition:border-color 0.3s,box-shadow 0.3s;
+  outline:none;
+}
+.hook-input::placeholder{color:var(--muted);}
+.hook-input:focus{
+  border-color:rgba(255,61,107,0.5);
+  box-shadow:0 0 0 4px rgba(255,61,107,0.06);
+}
+.hook-hint{
+  font-size:12px;color:var(--muted);margin-top:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.hook-hint span{color:#ff8fa3;}
+
+/* ── POSTING ROW ── */
+.posting-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.field-label{font-size:11px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;display:block;}
+select,input[type=number]{
+  width:100%;background:var(--card);
+  border:1px solid var(--border2);border-radius:12px;
+  padding:12px 16px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:0.9rem;
+  outline:none;transition:border-color 0.2s;
+  -webkit-appearance:none;appearance:none;
+}
+select:focus,input[type=number]:focus{border-color:rgba(255,61,107,0.4);}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23585878' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+input[type=number]::-webkit-inner-spin-button{opacity:1;}
+
+/* ── TOGGLE ── */
+.toggle-wrap{display:flex;gap:8px;margin-top:2px;}
+.toggle-btn{
+  flex:1;padding:12px;border-radius:12px;text-align:center;
+  border:1px solid var(--border2);background:var(--card);
+  color:var(--sub);font-size:0.88rem;cursor:pointer;
+  transition:all 0.2s;
+}
+.toggle-btn.active{background:rgba(255,61,107,0.12);border-color:rgba(255,61,107,0.4);color:#ff8fa3;}
+
+/* ── CHIP GRID ── */
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  padding:8px 16px;border-radius:100px;
+  border:1px solid var(--border2);background:var(--card);
+  color:var(--sub);font-size:0.82rem;cursor:pointer;
+  transition:all 0.2s;user-select:none;
+}
+.chip:hover{border-color:var(--border2);background:var(--card2);color:var(--text);}
+.chip.active{background:rgba(255,61,107,0.1);border-color:rgba(255,61,107,0.35);color:#ff8fa3;}
+
+/* ── PREDICT BTN ── */
+.predict-btn{
+  width:100%;margin-top:32px;padding:18px;
+  background:linear-gradient(90deg,var(--r),var(--o));
+  border:none;border-radius:14px;
+  font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;
+  letter-spacing:0.06em;color:#fff;cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:opacity 0.2s,transform 0.2s;
+}
+.predict-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  transform:translateX(-100%);transition:transform 0.5s;
+}
+.predict-btn:hover::before{transform:translateX(100%);}
+.predict-btn:hover{opacity:0.92;transform:translateY(-1px);}
+.predict-btn:active{transform:translateY(0);}
+.predict-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* ── LOADING ── */
+.loading{display:none;text-align:center;padding:60px 0;}
+.loading.show{display:block;}
+.spinner{
+  width:48px;height:48px;border-radius:50%;
+  border:2px solid var(--border2);
+  border-top-color:var(--r);
+  animation:spin 0.8s linear infinite;
+  margin:0 auto 20px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:var(--sub);font-size:0.9rem;}
+
+/* ── RESULTS ── */
+.results{display:none;}
+.results.show{display:block;animation:fadeUp 0.5s ease both;}
+
+/* RESULT CARD */
+.result-card{
+  border-radius:24px;padding:48px 32px;
+  text-align:center;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.result-card::before{
+  content:'';position:absolute;inset:0;
+  background:inherit;filter:blur(0);
+}
+.rc-bad{background:linear-gradient(160deg,#0e0408 0%,#1a0610 60%,#0e0408 100%);border:1px solid rgba(255,107,107,0.2);}
+.rc-mid{background:linear-gradient(160deg,#0e0e02 0%,#1a1800 60%,#0e0e02 100%);border:1px solid rgba(245,200,66,0.2);}
+.rc-viral{background:linear-gradient(160deg,#020e08 0%,#001a0e 60%,#020e08 100%);border:1px solid rgba(0,229,160,0.2);}
+.rc-explosive{background:linear-gradient(160deg,#0e0600 0%,#1a1000 60%,#0e0600 100%);border:1px solid rgba(255,126,61,0.3);}
+
+.rc-glow{
+  position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+  width:300px;height:300px;border-radius:50%;filter:blur(80px);opacity:0.25;pointer-events:none;
+}
+.glow-bad{background:#ff6b6b;}
+.glow-mid{background:#ffd93d;}
+.glow-viral{background:#00e5a0;}
+.glow-explosive{background:#ff7e3d;}
+
+.rc-emoji{font-size:4.5rem;display:block;margin-bottom:12px;position:relative;z-index:1;}
+.rc-label{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(2.8rem,7vw,4.5rem);
+  font-weight:700;display:block;margin-bottom:12px;
+  letter-spacing:-0.02em;position:relative;z-index:1;
+}
+.label-bad{color:#ff6b6b;}
+.label-mid{color:#ffd93d;}
+.label-viral{color:#00e5a0;}
+.label-explosive{
+  background:linear-gradient(90deg,#ff7e3d,#ffd93d);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.rc-desc{color:var(--sub);font-size:1rem;display:block;position:relative;z-index:1;}
+.rc-conf{
+  display:inline-block;margin-top:16px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:100px;padding:6px 16px;
+  font-size:12px;color:var(--muted);
+  position:relative;z-index:1;
+}
+
+/* PROBA */
+.proba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.proba-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:16px 18px;
+}
+.proba-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
+.proba-bar-wrap{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin-bottom:8px;}
+.proba-bar{height:100%;border-radius:2px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
+.proba-pct{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;}
+
+/* METRICS ROW */
+.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.metric-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:18px 16px;text-align:center;
+}
+.metric-val{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;display:block;line-height:1;}
+.metric-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;display:block;}
+
+/* HOOK ANALYSIS */
+.hook-analysis{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;overflow:hidden;margin-bottom:16px;
+}
+.ha-top{
+  padding:24px;
+  background:linear-gradient(135deg,rgba(255,61,107,0.06),rgba(255,126,61,0.04));
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:20px;
+}
+.ha-score{font-family:'Clash Display',sans-serif;font-size:3.5rem;font-weight:700;line-height:1;}
+.ha-meta-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;}
+.ha-badge{
+  display:inline-block;padding:4px 12px;border-radius:100px;
+  font-size:11px;font-weight:500;
+}
+.badge-strong{background:rgba(0,229,160,0.12);color:#00e5a0;border:1px solid rgba(0,229,160,0.2);}
+.badge-avg{background:rgba(255,217,61,0.12);color:#ffd93d;border:1px solid rgba(255,217,61,0.2);}
+.badge-weak{background:rgba(255,107,107,0.12);color:#ff6b6b;border:1px solid rgba(255,107,107,0.2);}
+.ha-body{padding:20px 24px;}
+.ha-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.875rem;line-height:1.6;}
+.ha-row:last-child{border-bottom:none;}
+.ha-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.ha-content{color:var(--text);}
+.ha-content b{color:#fff;font-weight:500;}
+
+/* TIPS */
+.tip{
+  background:var(--card);
+  border-left:2px solid var(--o);
+  border-radius:0 12px 12px 0;
+  padding:14px 18px;margin-bottom:8px;
+  font-size:0.875rem;line-height:1.6;color:var(--text);
+}
+
+/* RESET BTN */
+.reset-btn{
+  width:100%;margin-top:20px;padding:14px;
+  background:transparent;border:1px solid var(--border2);
+  border-radius:12px;color:var(--sub);
+  font-family:'DM Sans',sans-serif;font-size:0.9rem;
+  cursor:pointer;transition:all 0.2s;
+}
+.reset-btn:hover{background:var(--card);color:var(--text);}
+
+/* FOOTER */
+footer{
+  text-align:center;padding:40px 0 20px;
+  border-top:1px solid var(--border);
+  color:var(--muted);font-size:12px;line-height:2;
+}
+footer b{color:var(--sub);}
+footer .tags{margin-top:8px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+footer .tag{
+  padding:3px 10px;border-radius:100px;
+  background:var(--card);border:1px solid var(--border);
+  font-size:10px;color:var(--muted);
+}
+
+/* ERROR */
+.error-msg{
+  background:rgba(255,61,107,0.08);border:1px solid rgba(255,61,107,0.2);
+  border-radius:12px;padding:14px 18px;margin-bottom:12px;
+  color:#ff8fa3;font-size:0.875rem;display:none;
+}
+.error-msg.show{display:block;}
+
+@media(max-width:600px){
+  .posting-row{grid-template-columns:1fr;}
+  .proba-grid{grid-template-columns:1fr 1fr;}
+  .metrics-row{grid-template-columns:1fr 1fr 1fr;}
+  .hero h1{font-size:2.6rem;}
+  .stats{max-width:100%;}
+}
+/* ── SCORECARD ── */
+.scorecard{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;overflow:hidden;margin-bottom:16px;
+}
+.sc-header{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sc-title{font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;}
+.sc-overall{
+  font-family:'Clash Display',sans-serif;font-size:2rem;font-weight:700;
+}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.sc-item{
+  padding:16px 24px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sc-item:nth-child(2n){border-right:none;}
+.sc-item:nth-last-child(-n+2){border-bottom:none;}
+.sc-name{font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:0.08em;}
+.sc-grade{
+  font-family:'Clash Display',sans-serif;font-size:1.5rem;font-weight:700;
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+}
+.grade-ap{background:rgba(0,229,160,0.15);color:#00e5a0;}
+.grade-a{background:rgba(0,229,160,0.10);color:#00c48a;}
+.grade-bp{background:rgba(77,159,255,0.15);color:#4d9fff;}
+.grade-b{background:rgba(77,159,255,0.10);color:#3a8ae0;}
+.grade-c{background:rgba(255,217,61,0.15);color:#ffd93d;}
+.grade-d{background:rgba(255,107,107,0.15);color:#ff6b6b;}
+
+/* ── HEATMAP ── */
+.heatmap-wrap{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;overflow:hidden;margin-bottom:16px;
+}
+.hm-header{padding:20px 24px;border-bottom:1px solid var(--border);}
+.hm-title{font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:4px;}
+.hm-sub{font-size:12px;color:var(--sub);}
+.hm-body{padding:20px 24px;overflow-x:auto;}
+.hm-table{width:100%;border-collapse:collapse;min-width:480px;}
+.hm-table th{
+  font-size:10px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:0.1em;padding:8px 10px;text-align:center;
+  font-weight:500;
+}
+.hm-table th:first-child{text-align:left;}
+.hm-table td{padding:6px 10px;text-align:center;}
+.hm-table td:first-child{
+  font-size:11px;color:var(--sub);text-align:left;
+  text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;
+}
+.hm-cell{
+  width:100%;height:32px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:600;cursor:default;
+}
+
+/* ── HOOK REWRITER ── */
+.rewriter-wrap{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;overflow:hidden;margin-bottom:16px;
+}
+.rw-header{padding:20px 24px;border-bottom:1px solid var(--border);}
+.rw-title{font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:4px;}
+.rw-sub{font-size:12px;color:var(--sub);}
+.rw-btn{
+  margin:20px 24px 0;padding:14px 24px;
+  background:linear-gradient(90deg,rgba(255,61,107,0.15),rgba(255,126,61,0.15));
+  border:1px solid rgba(255,61,107,0.3);border-radius:12px;
+  color:#ff8fa3;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;
+  cursor:pointer;width:calc(100% - 48px);letter-spacing:0.05em;
+  transition:all 0.2s;
+}
+.rw-btn:hover{background:linear-gradient(90deg,rgba(255,61,107,0.25),rgba(255,126,61,0.25));}
+.rw-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.rw-results{padding:16px 24px 24px;}
+.rw-version{
+  padding:16px 18px;border-radius:12px;margin-bottom:10px;
+  border:1px solid var(--border);background:var(--bg2);position:relative;
+}
+.rw-version:last-child{margin-bottom:0;}
+.rw-tag{
+  font-size:9px;text-transform:uppercase;letter-spacing:0.12em;
+  font-weight:600;margin-bottom:8px;display:block;
+}
+.tag-curiosity{color:#4d9fff;}
+.tag-shock{color:#ff6b6b;}
+.tag-relatable{color:#00e5a0;}
+.rw-hook-text{font-size:1rem;color:#fff;font-weight:500;line-height:1.5;margin-bottom:6px;}
+.rw-reason{font-size:12px;color:var(--sub);line-height:1.5;}
+.rw-copy{
+  position:absolute;top:12px;right:12px;
+  background:rgba(255,255,255,0.06);border:1px solid var(--border);
+  border-radius:6px;padding:4px 10px;font-size:10px;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;
+}
+.rw-copy:hover{background:rgba(255,255,255,0.1);color:var(--text);}
+.rw-loading{padding:24px;text-align:center;color:var(--sub);font-size:0.875rem;display:none;}
+
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pill"><div class="pulse"></div> AI-Powered &nbsp;·&nbsp; Built on 40M+ Views</div>
+  <h1>
+    <span class="line1">Will Your Reel</span>
+    <span class="line2">Go Viral?</span>
+  </h1>
+  <p>Built on real content data by a creator who generated 40M+ organic views. Not theory - actual patterns from what worked and what didn't.</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-n">81.7%</span><span class="stat-l">Accuracy</span></div>
+    <div class="stat"><span class="stat-n">300</span><span class="stat-l">Reels Analysed</span></div>
+    <div class="stat"><span class="stat-n">40M+</span><span class="stat-l">Views Behind This</span></div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- FORM -->
+<div id="form-section">
+
+  <div class="sec"><span class="sec-icon">✍️</span> Your Hook - most important input</div>
+  <div class="hook-wrap">
+    <textarea class="hook-input" id="hook-text" placeholder='e.g. "POV: you stayed overnight at college and this happened…"'></textarea>
+    <p class="hook-hint">⚡ <span>Groq AI scores your hook</span> and it directly gates the prediction. Weak hook = Bad regardless of niche.</p>
+  </div>
+
+  <div class="sec"><span class="sec-icon">📅</span> Posting Details</div>
+  <div class="posting-row">
+    <div>
+      <span class="field-label">Posting Day</span>
+      <select id="posting-day">
+        <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+        <option selected>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+      </select>
+    </div>
+    <div>
+      <span class="field-label">Reel Length (seconds)</span>
+      <input type="number" id="reel-length" value="9" min="3" max="90">
+    </div>
+    <div>
+      <span class="field-label">Trending Audio?</span>
+      <div class="toggle-wrap">
+        <div class="toggle-btn active" id="audio-yes" onclick="setAudio('Yes')">Yes</div>
+        <div class="toggle-btn" id="audio-no" onclick="setAudio('No')">No</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="sec-icon">🎯</span> Content Niche - tick all that apply</div>
+  <div class="chip-grid" id="niche-grid"></div>
+
+  <div class="sec"><span class="sec-icon">🎣</span> Hook Type - tick all that apply</div>
+  <div class="chip-grid" id="hook-grid"></div>
+
+  <div class="sec"><span class="sec-icon">🖼️</span> First Frame - tick all that apply</div>
+  <div class="chip-grid" id="frame-grid"></div>
+
+  <div class="error-msg" id="error-msg"></div>
+  <button class="predict-btn" id="predict-btn" onclick="predict()">⚡ &nbsp; Predict Virality</button>
+</div>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p>Analysing your hook with Groq AI…</p>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+
+  <div class="result-card" id="result-card">
+    <div class="rc-glow" id="rc-glow"></div>
+    <span class="rc-emoji" id="rc-emoji"></span>
+    <span class="rc-label" id="rc-label"></span>
+    <span class="rc-desc" id="rc-desc"></span>
+    <span class="rc-conf" id="rc-conf"></span>
+  </div>
+
+  <div class="sec"><span class="sec-icon">📊</span> Probability Breakdown</div>
+  <div class="proba-grid" id="proba-grid"></div>
+
+  <div class="sec"><span class="sec-icon">📈</span> Key Signals</div>
+  <div class="metrics-row" id="metrics-row"></div>
+
+<div id="hook-analysis-wrap"></div>
+
+  <!-- SCORECARD -->
+  <div class="sec"><span class="sec-icon">🎯</span> Reel Scorecard</div>
+  <div class="scorecard" id="scorecard-wrap"></div>
+
+  <!-- HEATMAP -->
+  <div class="sec"><span class="sec-icon">🔥</span> Best Time to Post</div>
+  <div class="heatmap-wrap" id="heatmap-wrap">
+    <div class="hm-header">
+      <div class="hm-title">Posting Time Heatmap</div>
+      <div class="hm-sub" id="hm-sub">Loading data from your reels…</div>
+    </div>
+    <div class="hm-body"><div id="hm-table-wrap"></div></div>
+  </div>
+
+  <!-- HOOK REWRITER -->
+  <div class="sec"><span class="sec-icon">✨</span> Hook Rewriter</div>
+  <div class="rewriter-wrap" id="rewriter-wrap">
+    <div class="rw-header">
+      <div class="rw-title">AI Hook Rewriter</div>
+      <div class="rw-sub">Get 3 stronger versions of your hook - curiosity, shock, relatable</div>
+    </div>
+    <button class="rw-btn" id="rw-btn" onclick="rewriteHook()">✨ &nbsp; Rewrite My Hook</button>
+    <div class="rw-loading" id="rw-loading">Writing stronger hooks for you…</div>
+    <div class="rw-results" id="rw-results" style="display:none;"></div>
+  </div>
+
+  <div class="sec"><span class="sec-icon">💡</span> Smart Tips</div>
+  <div id="tips-wrap"></div>
+
+  <button class="reset-btn" onclick="reset()">← Analyse Another Reel</button>
+</div>
+
+<div class="div"></div>
+
+<footer>
+  Built by <b>Vivaan Jasapara</b> &nbsp;·&nbsp; Data Science Student, NMIMS Mumbai<br>
+  Trained on personal content data &nbsp;·&nbsp; 40M+ organic views
+  <div class="tags">
+    <span class="tag">XGBoost</span>
+    <span class="tag">Groq API</span>
+    <span class="tag">Python</span>
+    <span class="tag">Scikit-learn</span>
+    <span class="tag">ReelIQ v2.1</span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+const API = "http://localhost:5050";
+let audioVal = "Yes";
+let meta = {};
+
+async function loadMeta(){
+  try{
+    const r = await fetch(API+"/meta");
+    meta = await r.json();
+    buildChips("niche-grid", meta.niche_tags);
+    buildChips("hook-grid",  meta.hook_tags);
+    buildChips("frame-grid", meta.frame_tags);
+  }catch(e){
+    document.getElementById("error-msg").textContent = "⚠️ Cannot connect to backend. Make sure app.py is running on port 5050.";
+    document.getElementById("error-msg").classList.add("show");
+  }
+}
+
+function buildChips(gridId, tags){
+  const g = document.getElementById(gridId);
+  tags.forEach(tag=>{
+    const c = document.createElement("div");
+    c.className="chip"; c.textContent=tag;
+    c.onclick=()=>c.classList.toggle("active");
+    g.appendChild(c);
+  });
+}
+
+function setAudio(val){
+  audioVal=val;
+  document.getElementById("audio-yes").className="toggle-btn"+(val==="Yes"?" active":"");
+  document.getElementById("audio-no").className="toggle-btn"+(val==="No"?" active":"");
+}
+
+function getSelected(gridId){
+  return [...document.querySelectorAll("#"+gridId+" .chip.active")].map(c=>c.textContent);
+}
+
+function showError(msg){
+  const el=document.getElementById("error-msg");
+  el.textContent=msg; el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),4000);
+}
+
+async function predict(){
+  const hookText = document.getElementById("hook-text").value.trim();
+  const niches   = getSelected("niche-grid");
+  const hooks    = getSelected("hook-grid");
+  const frames   = getSelected("frame-grid");
+  const day      = document.getElementById("posting-day").value;
+  const length   = parseInt(document.getElementById("reel-length").value)||9;
+
+  if(!hookText){ showError("❌ Write your hook text - it's the most important input."); return; }
+  if(!niches.length){ showError("❌ Select at least one content niche."); return; }
+  if(!hooks.length){ showError("❌ Select at least one hook type."); return; }
+
+  document.getElementById("form-section").style.display="none";
+  document.getElementById("loading").classList.add("show");
+  document.getElementById("results").classList.remove("show");
+
+  try{
+    const res = await fetch(API+"/predict",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        hook_text:hookText, niches, hooks,
+        frames:frames.length?frames:["Face"],
+        posting_day:day, trending_audio:audioVal, reel_length:length
+      })
+    });
+    const d = await res.json();
+    renderResults(d);
+  }catch(e){
+    document.getElementById("loading").classList.remove("show");
+    document.getElementById("form-section").style.display="block";
+    showError("❌ Backend error. Make sure app.py is running.");
+  }
+}
+
+const CFG = {
+  Bad:      {emoji:"📉",cls:"rc-bad",   lcls:"label-bad",      gcls:"glow-bad",      desc:"Below 15,000 views - rethink before posting."},
+  Mid:      {emoji:"📈",cls:"rc-mid",   lcls:"label-mid",      gcls:"glow-mid",      desc:"15K–1L views - decent reach, something's holding it back."},
+  Viral:    {emoji:"🔥",cls:"rc-viral", lcls:"label-viral",    gcls:"glow-viral",    desc:"1L–5L views - this reel has real potential!"},
+  Explosive:{emoji:"🚀",cls:"rc-explosive",lcls:"label-explosive",gcls:"glow-explosive",desc:"Above 5L views - massive viral potential detected!"},
+};
+const COLORS = {Bad:"#ff6b6b",Mid:"#ffd93d",Viral:"#00e5a0",Explosive:"#ff7e3d"};
+const PROBA_ORDER = ["Explosive","Viral","Mid","Bad"];
+
+function renderResults(d){
+  document.getElementById("loading").classList.remove("show");
+
+  const cfg = CFG[d.prediction];
+  const card = document.getElementById("result-card");
+  card.className="result-card "+cfg.cls;
+  document.getElementById("rc-glow").className="rc-glow "+cfg.gcls;
+  document.getElementById("rc-emoji").textContent=cfg.emoji;
+  document.getElementById("rc-label").className="rc-label "+cfg.lcls;
+  document.getElementById("rc-label").textContent=d.prediction.toUpperCase();
+  document.getElementById("rc-desc").textContent=cfg.desc;
+  document.getElementById("rc-conf").textContent="Model confidence: "+d.confidence+"%";
+
+  // Proba
+  const pg = document.getElementById("proba-grid"); pg.innerHTML="";
+  PROBA_ORDER.forEach(cls=>{
+    const pct = d.probabilities[cls]||0;
+    const col = COLORS[cls];
+    pg.innerHTML+=`<div class="proba-box">
+      <div class="proba-label">${cls}</div>
+      <div class="proba-bar-wrap"><div class="proba-bar" style="width:${pct}%;background:${col}"></div></div>
+      <div class="proba-pct" style="color:${col}">${pct}%</div>
+    </div>`;
+  });
+
+  // Metrics
+  const scoreCol = d.hook_score>=7?"#00e5a0":d.hook_score>=5?"#ffd93d":"#ff6b6b";
+  document.getElementById("metrics-row").innerHTML=`
+    <div class="metric-box"><span class="metric-val" style="color:${scoreCol}">${d.hook_score}/10</span><span class="metric-lbl">Hook Score</span></div>
+    <div class="metric-box"><span class="metric-val">${d.skip_rate}%</span><span class="metric-lbl">Est. Skip Rate</span></div>
+    <div class="metric-box"><span class="metric-val">${document.getElementById("reel-length").value}s</span><span class="metric-lbl">Reel Length</span></div>
+  `;
+
+  // Hook analysis
+  const hw = document.getElementById("hook-analysis-wrap");
+  if(d.hook){
+    const h=d.hook;
+    const badge = d.hook_score>=7
+      ?'<span class="ha-badge badge-strong">Strong hook 🟢</span>'
+      :d.hook_score>=5
+      ?'<span class="ha-badge badge-avg">Average hook 🟡</span>'
+      :'<span class="ha-badge badge-weak">Weak hook 🔴</span>';
+    hw.innerHTML=`
+      <div class="sec"><span class="sec-icon">✍️</span> Hook Analysis</div>
+      <div class="hook-analysis">
+        <div class="ha-top">
+          <div class="ha-score" style="color:${scoreCol}">${d.hook_score}<span style="font-size:1.2rem;color:var(--muted)">/10</span></div>
+          <div>
+            <div class="ha-meta-label">Hook Strength Score</div>
+            ${badge}
+          </div>
+        </div>
+        <div class="ha-body">
+          <div class="ha-row"><span class="ha-icon">✅</span><div class="ha-content"><b>Strength:</b> ${h.strength}</div></div>
+          <div class="ha-row"><span class="ha-icon">⚠️</span><div class="ha-content"><b>Weakness:</b> ${h.weakness}</div></div>
+          <div class="ha-row"><span class="ha-icon">💡</span><div class="ha-content"><b>Tip 1:</b> ${h.tip1}</div></div>
+          <div class="ha-row"><span class="ha-icon">💡</span><div class="ha-content"><b>Tip 2:</b> ${h.tip2}</div></div>
+        </div>
+      </div>`;
+  } else { hw.innerHTML=""; }
+
+  // Tips
+  const tw=document.getElementById("tips-wrap"); tw.innerHTML="";
+  (d.tips||[]).forEach(t=>{ tw.innerHTML+=`<div class="tip">${t}</div>`; });
+
+  // store for rewriter
+  lastHookText = document.getElementById("hook-text").value.trim();
+  lastNiche = getSelected("niche-grid")[0] || "Student";
+  lastHookScore = d.hook_score;
+
+  // render new sections
+  const day = document.getElementById("posting-day").value;
+  const length = parseInt(document.getElementById("reel-length").value)||9;
+  renderScorecard(d, day, length, audioVal, getSelected("niche-grid"));
+  renderHeatmap(getSelected("niche-grid"));
+
+  // reset rewriter state
+  document.getElementById("rw-btn").disabled=false;
+  document.getElementById("rw-btn").textContent="✨   Rewrite My Hook";
+  document.getElementById("rw-results").style.display="none";
+  document.getElementById("rw-loading").style.display="none";
+
+  document.getElementById("results").classList.add("show");
+}
+
+function reset(){
+  document.getElementById("results").classList.remove("show");
+  document.getElementById("form-section").style.display="block";
+  document.getElementById("hook-text").value="";
+  document.querySelectorAll(".chip.active").forEach(c=>c.classList.remove("active"));
+}
+
+loadMeta();
+// ── SCORECARD ──
+function getGrade(score){
+  if(score>=90)return{g:"A+",cls:"grade-ap"};
+  if(score>=80)return{g:"A",cls:"grade-a"};
+  if(score>=70)return{g:"B+",cls:"grade-bp"};
+  if(score>=55)return{g:"B",cls:"grade-b"};
+  if(score>=40)return{g:"C",cls:"grade-c"};
+  return{g:"D",cls:"grade-d"};
+}
+
+function renderScorecard(d, day, length, audioVal, selectedNiches){
+  const hookGrade   = getGrade(d.hook_score * 10);
+  const timingScore = ["Thursday","Friday","Sunday"].includes(day) ? 85 :
+                      ["Saturday"].includes(day) ? 70 : 45;
+  const timingGrade = getGrade(timingScore);
+  const audioScore  = audioVal==="Yes" ? 85 : 50;
+  const audioGrade  = getGrade(audioScore);
+  const lenScore    = length<=7?95:length<=12?82:length<=20?65:length<=35?45:30;
+  const lenGrade    = getGrade(lenScore);
+  const nicheScore  = selectedNiches.some(n=>["Student","College","Funny"].includes(n))?88:
+                      selectedNiches.includes("Gym")?25:60;
+  const nicheGrade  = getGrade(nicheScore);
+  const overall     = Math.round((d.hook_score*10*0.35)+(timingScore*0.2)+(audioScore*0.15)+(lenScore*0.15)+(nicheScore*0.15));
+  const overallG    = getGrade(overall);
+
+  document.getElementById("scorecard-wrap").innerHTML=`
+    <div class="sc-header">
+      <div class="sc-title">Overall Reel Score</div>
+      <div class="sc-overall" style="color:${overallG.cls.includes('ap')||overallG.cls.includes('a-')||overallG.cls==='grade-a'?'#00e5a0':overallG.cls.includes('b')?'#4d9fff':overallG.cls==='grade-c'?'#ffd93d':'#ff6b6b'}">${overall}<span style="font-size:1rem;color:var(--muted)">/100</span></div>
+    </div>
+    <div class="sc-grid">
+      ${[
+        ["Hook Strength", hookGrade],
+        ["Posting Timing", timingGrade],
+        ["Audio Strategy", audioGrade],
+        ["Reel Length", lenGrade],
+        ["Niche Potential", nicheGrade],
+      ].map(([name,gr])=>`
+        <div class="sc-item">
+          <span class="sc-name">${name}</span>
+          <div class="sc-grade ${gr.cls}">${gr.g}</div>
+        </div>`).join("")}
+    </div>`;
+}
+
+// ── HEATMAP ──
+async function renderHeatmap(selectedNiches){
+  const niche = selectedNiches[0] || "Student";
+  document.getElementById("hm-sub").textContent = `Showing patterns for ${niche} content from your 300 reels`;
+  try{
+    const r = await fetch(API+`/heatmap?niche=${encodeURIComponent(niche)}`);
+    const data = await r.json();
+    if(data.error){ document.getElementById("hm-table-wrap").innerHTML=`<p style="color:var(--muted);font-size:13px">Could not load heatmap data.</p>`; return; }
+    const {grid,days,slots} = data;
+    const getColor = v => {
+      if(v>=2.5) return {bg:"rgba(0,229,160,0.25)",color:"#00e5a0",label:"🔥"};
+      if(v>=1.8) return {bg:"rgba(0,229,160,0.10)",color:"#00c48a",label:"✅"};
+      if(v>=1.2) return {bg:"rgba(255,217,61,0.15)",color:"#ffd93d",label:"~"};
+      return {bg:"rgba(255,107,107,0.10)",color:"#ff6b6b",label:"✗"};
+    };
+    let html=`<table class="hm-table"><thead><tr><th></th>${days.map(d=>`<th>${d.slice(0,3)}</th>`).join("")}</tr></thead><tbody>`;
+    slots.forEach(slot=>{
+      html+=`<tr><td>${slot}</td>${days.map(day=>{
+        const v=grid[day]?.[slot]??1;
+        const c=getColor(v);
+        return `<td><div class="hm-cell" style="background:${c.bg};color:${c.color}" title="${day} ${slot}: Score ${v}">${c.label}</div></td>`;
+      }).join("")}</tr>`;
+    });
+    html+=`</tbody></table><div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:var(--sub)">🔥 Explosive zone &nbsp; ✅ Good &nbsp; ~ Average &nbsp; ✗ Avoid</span>
+    </div>`;
+    document.getElementById("hm-table-wrap").innerHTML=html;
+  }catch(e){
+    document.getElementById("hm-table-wrap").innerHTML=`<p style="color:var(--muted);font-size:13px">Heatmap unavailable.</p>`;
+  }
+}
+
+// ── HOOK REWRITER ──
+let lastHookText="", lastNiche="Student", lastHookScore=5;
+
+async function rewriteHook(){
+  const btn=document.getElementById("rw-btn");
+  const loading=document.getElementById("rw-loading");
+  const results=document.getElementById("rw-results");
+  btn.disabled=true; btn.textContent="Rewriting…";
+  loading.style.display="block"; results.style.display="none";
+  try{
+    const res=await fetch(API+"/rewrite",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({hook_text:lastHookText, niche:lastNiche, hook_score:lastHookScore})
+    });
+    const d=await res.json();
+    if(d.error){loading.style.display="none";btn.disabled=false;btn.textContent="✨   Rewrite My Hook";return;}
+    results.innerHTML=`
+      ${[
+        {v:d.v1,r:d.r1,tag:"Curiosity Gap",cls:"tag-curiosity",style:"curiosity"},
+        {v:d.v2,r:d.r2,tag:"Shock / Twist",cls:"tag-shock",style:"shock"},
+        {v:d.v3,r:d.r3,tag:"Deeply Relatable",cls:"tag-relatable",style:"relatable"},
+      ].map((item,i)=>`
+        <div class="rw-version">
+          <button class="rw-copy" onclick="copyHook(this,'${item.v.replace(/'/g,"\\'")}')">Copy</button>
+          <span class="rw-tag ${item.cls}">${item.tag}</span>
+          <div class="rw-hook-text">"${item.v}"</div>
+          <div class="rw-reason">${item.r}</div>
+        </div>`).join("")}`;
+    loading.style.display="none";
+    results.style.display="block";
+    btn.textContent="✨   Rewrite Again";
+  }catch(e){
+    loading.style.display="none";
+  }
+  btn.disabled=false;
+}
+
+function copyHook(btn, text){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent="Copied!";
+    setTimeout(()=>btn.textContent="Copy",2000);
+  });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "niche_tags": [
+    "Student",
+    "Funny",
+    "College",
+    "Cinematic",
+    "Friendship",
+    "Vlog",
+    "Gym",
+    "Motivation",
+    "Emotional",
+    "Relatable",
+    "Shock"
+  ],
+  "hook_tags": [
+    "Curiosity",
+    "Shock",
+    "Relatable",
+    "Question",
+    "Challenge",
+    "Emotional",
+    "Nostalgia",
+    "Wordplay",
+    "Transformation"
+  ],
+  "frame_tags": [
+    "Face",
+    "Text",
+    "Action",
+    "Scene",
+    "Group",
+    "Body"
+  ],
+  "performance_classes": [
+    "Bad",
+    "Explosive",
+    "Mid",
+    "Viral"
+  ],
+  "accuracy": {
+    "cv": "80.3%",
+    "test": "81.7%"
+  },
+  "hook_score_formula": "skip_rate = 70 - (hook_score * 4)",
+  "thresholds": {
+    "Bad": "under 15,000 views",
+    "Mid": "15,000 to 1,00,000 views",
+    "Viral": "1,00,000 to 5,00,000 views",
+    "Explosive": "above 5,00,000 views"
+  }
+}
